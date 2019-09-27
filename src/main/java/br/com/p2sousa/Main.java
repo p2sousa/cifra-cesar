@@ -1,5 +1,6 @@
 package br.com.p2sousa;
 
+import com.google.gson.JsonObject;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -7,26 +8,41 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String text = "1a.a";
-        Integer key = 3;
-	    CriptoCesar criptoCesar = new CriptoCesar(text, key);
+        JsonObject josnObject = new JsonRequest()
+                .requestJsonObject("https://superaudio.com.br/radio-store/manager-clients/authorize-client-id");
 
-	    String textEncrypt = criptoCesar.encrypt();
+        JsonWrite jsonFileCreate = new JsonWrite();
 
-        System.out.println("texto a ser encriptado: " + text);
-        System.out.println("texto encriptado: " + textEncrypt);
+        jsonFileCreate.createJson(josnObject, "saida.json");
 
-
-        JsonWrite file = new JsonWrite();
-        file.createJson();
-
-
-        JsonRead fileRead = new JsonRead();
+        JsonRead file = new JsonRead();
 
         try {
-            fileRead.readFile();
+            file.readFile("saida.json");
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
+
+//    private void cesar() {
+//        String text = "1a.a";
+//        Integer key = 3;
+//        CriptoCesar criptoCesar = new CriptoCesar(text, key);
+//
+//        String textEncrypt = criptoCesar.encrypt();
+//
+//        System.out.println("texto a ser encriptado: " + text);
+//        System.out.println("texto encriptado: " + textEncrypt);
+//
+//        JsonWrite file = new JsonWrite();
+//        file.createJson();
+//
+//        JsonRead fileRead = new JsonRead();
+//
+//        try {
+//            fileRead.readFile();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

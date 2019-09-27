@@ -10,25 +10,23 @@ import java.io.IOException;
 
 public class JsonRead {
 
-    public void readFile() throws IOException, ParseException {
+    public void readFile(String filename) throws IOException, ParseException {
         JSONObject jsonObject;
         JSONParser parser = new JSONParser();
 
-        String nome;
-        String sobrenome;
-        String estado;
-        String pais;
+        String status;
+        String message;
+        String data;
 
         try {
 
-            jsonObject = (JSONObject) parser.parse(new FileReader("saida.json"));
+            jsonObject = (JSONObject) parser.parse(new FileReader(filename));
 
-            nome = (String) jsonObject.get("nome");
-            sobrenome = (String) jsonObject.get("sobrenome");
-            estado = (String) jsonObject.get("estado");
-            pais = (String) jsonObject.get("pais");
+            status = (String) jsonObject.get("status");
+            message = (String) jsonObject.get("message");
+            data = (String) jsonObject.get("data");
 
-            System.out.printf("Nome: %s\nSobrenome: %s\nEstado: %s\nPais: %s\n", nome, sobrenome, estado, pais);
+            System.out.printf("Nome: %s\nSobrenome: %s\nEstado: %s\nPais:", status, message, data);
         }
 
         catch (FileNotFoundException e) {

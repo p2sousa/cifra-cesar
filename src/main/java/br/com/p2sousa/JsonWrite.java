@@ -1,35 +1,23 @@
 package br.com.p2sousa;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class JsonWrite {
 
-    public JsonWrite() {
-
-    }
-
-    public void createJson() {
-        JSONObject jsonObject = new JSONObject();
+    public void createJson(JsonObject json, String file) {
 
         FileWriter writeFile = null;
 
-        jsonObject.put("nome", "Pablo");
-        jsonObject.put("sobrenome", "Romanato");
-        jsonObject.put("pais", "Brasil");
-        jsonObject.put("estado", "SP");
-
         try{
-            writeFile = new FileWriter("saida.json");
-            writeFile.write(jsonObject.toJSONString());
+            writeFile = new FileWriter(file);
+            writeFile.write(json.toString());
             writeFile.close();
         }
         catch(IOException e){
             e.printStackTrace();
         }
-
-        System.out.println(jsonObject);
     }
 }
