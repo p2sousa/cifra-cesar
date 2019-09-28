@@ -1,48 +1,39 @@
 package br.com.p2sousa;
 
 import com.google.gson.JsonObject;
-import org.json.simple.parser.ParseException;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.IOException;
 
 public class Main {
 
+    private static String filename = "answer.json";
+    private static String endpoint = "https://api.codenation.dev/v1/challenge/dev-ps/generate-data?token=546c5fdfe6adeaf7b132e110ac887aac2880959c";
+
     public static void main(String[] args) throws IOException {
-        JsonObject josnObject = new JsonRequest()
-                .requestJsonObject("https://superaudio.com.br/radio-store/manager-clients/authorize-client-id");
-
+        JsonObject josnObject = new JsonRequest().requestJsonObject(endpoint);
         JsonWrite jsonFileCreate = new JsonWrite();
-
-        jsonFileCreate.createJson(josnObject, "saida.json");
-
         JsonRead file = new JsonRead();
 
-        try {
-            file.readFile("saida.json");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        jsonFileCreate.createJson(josnObject, filename);
+
+        josnObject = file.readFile(filename);
+
+        josnObject = cesarDecrypt(josnObject);
+
+        jsonFileCreate.createJson(josnObject, filename);
     }
 
-//    private void cesar() {
-//        String text = "1a.a";
-//        Integer key = 3;
-//        CriptoCesar criptoCesar = new CriptoCesar(text, key);
-//
-//        String textEncrypt = criptoCesar.encrypt();
-//
-//        System.out.println("texto a ser encriptado: " + text);
-//        System.out.println("texto encriptado: " + textEncrypt);
-//
-//        JsonWrite file = new JsonWrite();
-//        file.createJson();
-//
-//        JsonRead fileRead = new JsonRead();
-//
-//        try {
-//            fileRead.readFile();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private static JsonObject cesarDecrypt(JsonObject jsonObject) {
+        String text = jsonObject.get("cifrado").getAsString();
+        Integer key = jsonObject.get("numero_casas").getAsInt();
+        CriptoCesar criptoCesar = new CriptoCesar(text, key);
+
+        String textDecrypt = criptoCesar.decrypt();
+        String textSha1 = DigestUtils.sha1Hex(textDecrypt);
+
+        jsonObject.addProperty("decifrado", textDecrypt);
+        jsonObject.addProperty("resumo_criptografico", textSha1);
+        return jsonObject;
+    }
 }

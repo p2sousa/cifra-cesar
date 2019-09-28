@@ -19,60 +19,50 @@ public class CriptoCesar {
     }
 
     public String encrypt() {
-        String textEncrypt = "";
-        Integer keyEncrypt = getKey();
-        char ascii;
-        char x, y;
+        String textoCifrado = getText().toLowerCase();
+        String text = "";
+        int tamanhoTexto = getText().length();
+        int min = 97;
+        int max = 122;
 
-        while (keyEncrypt >= 26) {
-            keyEncrypt = keyEncrypt - 26;
-        }
+        for (int c = 0; c < tamanhoTexto; c++) {
+            int caracter = ((int) textoCifrado.charAt(c));
+            if (caracter < min || caracter > max){
+                text += (char) caracter;
+            }else{
+                int ASCII = ((int) textoCifrado.charAt(c)) + getKey();
 
-        for (int i = 0; i < getText().length(); i++) {
-            if (getText().charAt(i) >= 97 && getText().charAt(i) <= 122) {
-                if ((int) (getText().charAt(i) + keyEncrypt) > 122) {
-                    x = (char) (getText().charAt(i) + keyEncrypt);
-                    y = (char) (x - 122);
-                    ascii = (char) (96 + y);
-                    textEncrypt = textEncrypt + ascii;
-                } else {
-                    ascii = (char) (getText().charAt(i) + keyEncrypt);
-                    textEncrypt = textEncrypt + ascii;
+                if (ASCII < min){
+                    ASCII = max - (min - ASCII)+1;
                 }
-            } else {
-                textEncrypt = textEncrypt + getText().charAt(i);
+                text += (char) ASCII;
             }
         }
 
-        return textEncrypt;
+        return text;
     }
 
     public String decrypt() {
-        String textDecrypt = "";
-        Integer keyEncrypt = getKey();
-        char ascii;
-        char x, y;
+        String textoCifrado = getText().toLowerCase();
+        String text = "";
+        int tamanhoTexto = getText().length();
+        int min = 97;
+        int max = 122;
 
-        while (keyEncrypt >= 26) {
-            keyEncrypt = keyEncrypt - 26;
-        }
+        for (int c = 0; c < tamanhoTexto; c++) {
+            int caracter = ((int) textoCifrado.charAt(c));
+            if (caracter < min || caracter > max){
+                text += (char) caracter;
+            }else{
+                int ASCII = ((int) textoCifrado.charAt(c)) - getKey();
 
-        for (int i = 0; i < getText().length(); i++) {
-            if (getText().charAt(i) >= 97 && getText().charAt(i) <= 122) {
-                if ((int) (getText().charAt(i) - keyEncrypt) > 122) {
-                    x = (char) (getText().charAt(i) - keyEncrypt);
-                    y = (char) (x - 122);
-                    ascii = (char) (96 + y);
-                    textDecrypt = textDecrypt + ascii;
-                } else {
-                    ascii = (char) (getText().charAt(i) - keyEncrypt);
-                    textDecrypt = textDecrypt + ascii;
+                if (ASCII < min){
+                    ASCII = max - (min - ASCII)+1;
                 }
-            } else {
-                textDecrypt = textDecrypt + getText().charAt(i);
+                text += (char) ASCII;
             }
         }
 
-        return textDecrypt;
+        return text;
     }
 }
