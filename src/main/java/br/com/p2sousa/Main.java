@@ -9,6 +9,7 @@ public class Main {
 
     private static String filename = "answer.json";
     private static String endpoint = "https://api.codenation.dev/v1/challenge/dev-ps/generate-data?token=546c5fdfe6adeaf7b132e110ac887aac2880959c";
+    private static String endpointPost = "https://api.codenation.dev/v1/challenge/dev-ps/submit-solution?token=546c5fdfe6adeaf7b132e110ac887aac2880959c";
 
     public static void main(String[] args) throws IOException {
         JsonObject josnObject = new JsonRequest().requestJsonObject(endpoint);
@@ -22,6 +23,9 @@ public class Main {
         josnObject = cesarDecrypt(josnObject);
 
         jsonFileCreate.createJson(josnObject, filename);
+
+        JsonPost sendFile = new JsonPost();
+        sendFile.execute(endpointPost, filename);
     }
 
     private static JsonObject cesarDecrypt(JsonObject jsonObject) {
@@ -36,4 +40,6 @@ public class Main {
         jsonObject.addProperty("resumo_criptografico", textSha1);
         return jsonObject;
     }
+
+
 }
